@@ -46,7 +46,8 @@ function playGame(){
         let playerChoice;
         while(true){
             playerChoice = prompt("Enter your choice.");
-            if (playerChoice != null){  // check if user did not cancel of okay'ed an empty prompt
+            console.log(playerChoice);
+            if (playerChoice != null && playerChoice != undefined && playerChoice != ""){  // check if user did not cancel of okay'ed an empty prompt
                 playerChoice = playerChoice[0].toUpperCase() + playerChoice.slice(1).toLowerCase(); // parse the input 
             }
             if (isValid(playerChoice)){
