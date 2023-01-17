@@ -6,7 +6,6 @@ function isValid(choice){
     }
 }
 
-
 function getComputerChoice(){
     let rannum = Math.floor((Math.random()*100));
     console.log(rannum);
@@ -47,11 +46,13 @@ function playGame(){
         let playerChoice;
         while(true){
             playerChoice = prompt("Enter your choice.");
-            playerChoice = playerChoice[0].toUpperCase() + playerChoice.slice(1).toLowerCase();
+            if (playerChoice != null){  // check if user did not cancel of okay'ed an empty prompt
+                playerChoice = playerChoice[0].toUpperCase() + playerChoice.slice(1).toLowerCase(); // parse the input 
+            }
             if (isValid(playerChoice)){
                 break;
             }
-            console.log("Please enter a valid choice (rock, paper or scissors capitaliation does not matter)");
+            console.log("Please enter a valid choice (rock, paper or scissors capitalization does not matter)");
         }
         let result = playRound(playerChoice, getComputerChoice());
         if (result === "Human"){
