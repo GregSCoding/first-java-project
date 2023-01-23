@@ -1,60 +1,75 @@
-function isValid(choice){
-    if (choice === "Rock" || choice === "Paper" || choice === "Scissors"){
-        return true
-    }else{
-        return false
-    }
-}
+rockButton = document.querySelector("#rock");
+rockButton.addEventListener("click", playRound);
+rockButton.figure = "Rock";
+paperButton = document.querySelector("#paper");
+paperButton.addEventListener("click", playRound);
+paperButton.figure = "Paper";
+scissorsButton = document.querySelector("#scissors");
+scissorsButton.addEventListener("click", playRound);
+scissorsButton.figure = "scissors";
+playerScore = document.querySelector("#playerscore");
+computerScore = document.querySelector("#computerscore");
+computerChoiceTxt = document.querySelector("#compchoice");
+playerChoiceTxt = document.querySelector("#playerchoice");
+resultTxt = document.querySelector("#result");
+computerScore.score = 0;
+playerScore.score = 0;
+
 
 function getComputerChoice(){
     let rannum = Math.floor((Math.random()*100));
-    console.log(rannum);
+    let result = "";
     if (rannum > 66){
-        return "Rock"
+        result = "Rock";
     }else if (rannum > 33){
-        return "Paper";
+        result = "Paper";
     }else{
-        return "Scissors";
+        result = "Scissors";
     }
+    return result;
 }
-function playRound(p1choice, p2choice){
-    declarePlayerWin = (p1, p2) => console.log("You win. " + p1 + " beats " + p2);
-    declareCompWin = (p1,p2) => console.log("You lose. " + p2 + " beats " + p1);
-    if (p1choice === p2choice){
-        console.log("Draw");
-        return "Draw";
-    }else if (p1choice === "Rock" && p2choice === "Scissors"){
-        declarePlayerWin(p1choice, p2choice);
-        return "Human";
-    }else if (p1choice === "Paper" && p2choice === "Rock"){
-        declarePlayerWin(p1choice,p2choice);
-        return "Human";
-    }else if (p1choice === "Scissors" && p2choice === "Paper"){
-        declarePlayerWin(p1choice,p2choice);
-        return "Human";
+function playRound(e){
+    playeChoice = e.currentTarget.figure;
+    computerChoice = getComputerChoice();
+    resultTxt.textContent = "";
+    computerChoiceTxt.textContent = "Computer chose " + computerChoice + ".";
+    playerChoiceTxt.textContent = "You chose " + playeChoice + ".";
+    e.stopPropagation();
+    let msg;
+    declarePlayerWin = () => {
+        playerScore.score++;
+        return "You win. " + playeChoice + " beats " + computerChoice + ".";
+    };
+    declareCompWin = () => {
+        computerScore.score++;
+        return "You lose. " + computerChoice + " beats " + playeChoice + ".";
+    };
+        if (playeChoice === computerChoice){
+        msg = "It's a draw"
+    }else if (playeChoice === "Rock" && computerChoice === "Scissors"){
+        msg = declarePlayerWin();
+    }else if (playeChoice === "Paper" && computerChoice === "Rock"){
+        msg = declarePlayerWin();
+    }else if (playeChoice === "Scissors" && computerChoice === "Paper"){
+        msg = declarePlayerWin();
     }else{
-        declareCompWin(p1choice, p2choice);
-        return "Computer";
+        msg = declareCompWin();
     }
+    updateUi(msg);
+}
+
+function updateUi(msg){
+    setTimeout(() => {
+        computerChoiceTxt.textContent = "";
+        playerChoiceTxt.textContent = "";
+        resultTxt.textContent = msg;
+        console.log(msg);
+    }, 2000);
 }
 
 function playGame(){
-    console.log("It is a console game of rock paper and scissors, have fun!");
-    let humanScore = 0;
-    let compScore = 0;
     for (let i = 0; i < 5; i++){
         let playerChoice;
-        while(true){
-            playerChoice = prompt("Enter your choice.");
-            console.log(playerChoice);
-            if (playerChoice != null && playerChoice != undefined && playerChoice != ""){  // check if user did not cancel of okay'ed an empty prompt
-                playerChoice = playerChoice[0].toUpperCase() + playerChoice.slice(1).toLowerCase(); // parse the input 
-            }
-            if (isValid(playerChoice)){
-                break;
-            }
-            console.log("Please enter a valid choice (rock, paper or scissors capitalization does not matter)");
-        }
         let result = playRound(playerChoice, getComputerChoice());
         if (result === "Human"){
             humanScore++;
@@ -70,4 +85,3 @@ function playGame(){
         console.log("It's a draw. Very unlikely!")
     }
  }
- playGame();
