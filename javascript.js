@@ -6,7 +6,7 @@ paperButton.addEventListener("click", playRound);
 paperButton.figure = "Paper";
 const scissorsButton = document.querySelector("#scissors");
 scissorsButton.addEventListener("click", playRound);
-scissorsButton.figure = "scissors";
+scissorsButton.figure = "Scissors";
 const playerScore = document.querySelector("#playerscore");
 const computerScore = document.querySelector("#computerscore");
 const computerChoiceTxt = document.querySelector("#compchoice");
@@ -81,11 +81,11 @@ function updateUi(msg){
     if (computerScore.score == 5){
         computerChoiceTxt.textContent = "";
         playerChoiceTxt.textContent = "";
-        resultTxt.textContent = "Too bad. Computer won.";
+        resultTxt.textContent = "Too bad. Computer won. Reload page to play again.";
     }else if (playerScore.score == 5){
         computerChoiceTxt.textContent = "";
         playerChoiceTxt.textContent = "";
-        resultTxt.textContent  = "You won! Congratulations.";
+        resultTxt.textContent  = "You won! Congratulations. Reload page to play again.";
     }else{
         enableButtons();
     }
