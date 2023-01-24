@@ -1,21 +1,20 @@
-rockButton = document.querySelector("#rock");
+const rockButton = document.querySelector("#rock");
 rockButton.addEventListener("click", playRound);
 rockButton.figure = "Rock";
-paperButton = document.querySelector("#paper");
+const paperButton = document.querySelector("#paper");
 paperButton.addEventListener("click", playRound);
 paperButton.figure = "Paper";
-scissorsButton = document.querySelector("#scissors");
+const scissorsButton = document.querySelector("#scissors");
 scissorsButton.addEventListener("click", playRound);
 scissorsButton.figure = "scissors";
-playerScore = document.querySelector("#playerscore");
-computerScore = document.querySelector("#computerscore");
-computerChoiceTxt = document.querySelector("#compchoice");
-playerChoiceTxt = document.querySelector("#playerchoice");
-resultTxt = document.querySelector("#result");
+const playerScore = document.querySelector("#playerscore");
+const computerScore = document.querySelector("#computerscore");
+const computerChoiceTxt = document.querySelector("#compchoice");
+const playerChoiceTxt = document.querySelector("#playerchoice");
+const resultTxt = document.querySelector("#result");
 computerScore.score = 0;
 playerScore.score = 0;
-
-
+const buttons = document.querySelectorAll("button");
 function getComputerChoice(){
     let rannum = Math.floor((Math.random()*100));
     let result = "";
@@ -29,6 +28,7 @@ function getComputerChoice(){
     return result;
 }
 function playRound(e){
+    disableButtons();
     playeChoice = e.currentTarget.figure;
     computerChoice = getComputerChoice();
     resultTxt.textContent = "";
@@ -56,6 +56,17 @@ function playRound(e){
         msg = declareCompWin();
     }
     updateUi(msg);
+    
+}
+function disableButtons(){
+    buttons.forEach(function(elem){
+        elem.disabled = true;
+    });
+}
+function enableButtons(){
+    buttons.forEach(function(elem){
+        elem.disabled = false;
+    });
 }
 
 function updateUi(msg){
@@ -63,25 +74,20 @@ function updateUi(msg){
         computerChoiceTxt.textContent = "";
         playerChoiceTxt.textContent = "";
         resultTxt.textContent = msg;
-        console.log(msg);
-    }, 2000);
-}
-
-function playGame(){
-    for (let i = 0; i < 5; i++){
-        let playerChoice;
-        let result = playRound(playerChoice, getComputerChoice());
-        if (result === "Human"){
-            humanScore++;
-        }else if (result === "Computer"){
-            compScore++;
-        }
-    }
-    if (humanScore > compScore){
-        console.log("You won! Congratulations. " + compScore + " to " + humanScore);
-    }else if (compScore > humanScore){
-        console.log("Too bad. Computer won. " + compScore + " to " + humanScore);
+        computerScore.textContent = "Computer " + computerScore.score;
+        playerScore.textContent = "Human " + playerScore.score;
+    }, 1000);
+    setTimeout(() =>{
+    if (computerScore.score == 5){
+        computerChoiceTxt.textContent = "";
+        playerChoiceTxt.textContent = "";
+        resultTxt.textContent = "Too bad. Computer won.";
+    }else if (playerScore.score == 5){
+        computerChoiceTxt.textContent = "";
+        playerChoiceTxt.textContent = "";
+        resultTxt.textContent  = "You won! Congratulations.";
     }else{
-        console.log("It's a draw. Very unlikely!")
+        enableButtons();
     }
- }
+    }, 2500);
+}
